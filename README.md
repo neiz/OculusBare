@@ -1,0 +1,1 @@
+This is the barebones required to initialize a connection to the Oculus Rift hardware and display sensor info.
