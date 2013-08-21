@@ -1,6 +1,22 @@
+// ==========================================================================
+// MinimalOculus - Minimal Oculus Application
+// Show hardware parameters and head tracker values.
+// ==========================================================================
+// Revision History, Last Change First:
+// YYYY/MM/DD Author               Description
+// ========== ==================== ==========================================
+// 2013/04/12 Geekmaster           Add Acceleration Data.
+// 2013/02/22 Cybereality          First release version.
+
 #include "OVR.h"
 #include <iostream>
 #include <conio.h>
+
+//#define STD_GRAV 9.81 // What SHOULD work with Rift, but off by 1000
+#define STD_GRAV 0.00981  // This gives nice 1.00G on Z with Rift face down !!!
+
+using namespace OVR;
+using namespace std;
 
 using namespace OVR;
 using namespace std;
@@ -96,14 +112,18 @@ void Output()
 
 	while(pSensor)
 	{
+		Vector3f acc = FusionResult.GetAcceleration();
 		Quatf quaternion = FusionResult.GetOrientation();
 
 		float yaw, pitch, roll;
 		quaternion.GetEulerAngles<Axis_Y, Axis_X, Axis_Z>(&yaw, &pitch, &roll);
 
-		cout << " Yaw: " << RadToDegree(yaw) <<
-			", Pitch: " << RadToDegree(pitch) <<
-			", Roll: " << RadToDegree(roll) << endl;
+		cout << "Yaw=" << RadToDegree(yaw) <<
+			" Pitch=" << RadToDegree(pitch) <<
+			" Roll=" << RadToDegree(roll) <<
+			" X=" << acc.x / STD_GRAV <<
+			" Y=" << acc.y / STD_GRAV <<
+			" Z=" << acc.z / STD_GRAV << endl;
 
 		Sleep(50);
 
